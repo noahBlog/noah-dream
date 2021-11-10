@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>Stream</title>
+    <link href="/2021/10/13/Stream/"/>
+    <url>/2021/10/13/Stream/</url>
+    
+    <content type="html"><![CDATA[<h2 id="steam流"><a href="#steam流" class="headerlink" title="steam流"></a>steam流</h2><p>一种可以处理数据的处理方法，类似于sql的筛选语句，结合lambda表达式，可以让代码更加的简洁</p><h2 id="并行流和串行流"><a href="#并行流和串行流" class="headerlink" title="并行流和串行流"></a>并行流和串行流</h2><h5 id="串行流："><a href="#串行流：" class="headerlink" title="串行流："></a>串行流：</h5><h5 id="并行流"><a href="#并行流" class="headerlink" title="并行流"></a>并行流</h5>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Lambda表达式</title>
+    <link href="/2021/10/13/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+    <url>/2021/10/13/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Lambda的结构"><a href="#Lambda的结构" class="headerlink" title="Lambda的结构"></a>Lambda的结构</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-function"><span class="hljs-params">(参数类型 参数名)</span> -&gt;</span> &#123;<br>    方法体;<br>    <span class="hljs-keyword">return</span> 返回值;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="lambda的表达式"><a href="#lambda的表达式" class="headerlink" title="lambda的表达式"></a>lambda的表达式</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs livescript">对于单个变量可以有()，也可以没有<br><span class="hljs-number">1.</span><span class="hljs-function"><span class="hljs-params">(var1)</span>-&gt;</span>expression<br><span class="hljs-number">2.var</span>1-&gt;expression<br>对于多个变量需要有()<br><span class="hljs-number">3.</span><span class="hljs-function"><span class="hljs-params">(var1,var2)</span>-&gt;</span>expression<br></code></pre></td></tr></table></figure><h2 id="lambda应用"><a href="#lambda应用" class="headerlink" title="lambda应用"></a>lambda应用</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-number">1.</span>简单应用<br><span class="hljs-function"><span class="hljs-params">(x,y)</span>-&gt;</span>x+y<br><span class="hljs-number">2.</span>实现排序<br>Comparator&lt;<span class="hljs-built_in">String</span>&gt; compare=（<span class="hljs-built_in">String</span> v1，<span class="hljs-built_in">String</span> v2)-&gt;-&gt;v1.getId().compareTo(v2.getId());<br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Lambda</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>JWT无法转换set&lt;&gt;集合</title>
+    <link href="/2021/10/13/2/"/>
+    <url>/2021/10/13/2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="JWT无法转换set-lt-gt-集合"><a href="#JWT无法转换set-lt-gt-集合" class="headerlink" title="JWT无法转换set&lt;&gt;集合"></a>JWT无法转换set&lt;&gt;集合</h1><p>工程开发中，DTO类中存储了set集合，包装成token，经过jwt解析报List无法转换成set的错误</p><h2 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.ClassCastException</span>: java<span class="hljs-selector-class">.util</span><span class="hljs-selector-class">.ArrayList</span> cannot be cast to java<span class="hljs-selector-class">.util</span>.Set<br></code></pre></td></tr></table></figure><p>经过debug调试，找到jwt构成代码中</p><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs haxe">UntypedObjectDeserializer&#123;<br>...<br><span class="hljs-comment">//495行</span><br>            <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<span class="hljs-type"></span><br>                t = p.nextToken();<br>                <span class="hljs-keyword">if</span> (t == JsonToken.END_ARRAY) &#123;<br>                    <span class="hljs-keyword">if</span> (ctxt.isEnabled(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)) &#123;<br>                        <span class="hljs-keyword">return</span> UntypedObjectDeserializer.NO_OBJECTS;<br>                    &#125;<br><br>                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-type">ArrayList</span>(<span class="hljs-number">2</span>);<br>&#125;<br></code></pre></td></tr></table></figure><p>原因在数组传输中转换成Json,反序列化构建成对象的时候，List和Set传输的json的格式是一样的，所以jwt无法判断到底是什么类型，所以他直接返回了一个ArryList</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>所以最终的解决方案，是传输过去一个Set过去，用List来获取反序列化的对象，再转换成Set做存储</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>jwt</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Mybatis pg数据库无法映射到实体类</title>
+    <link href="/2021/10/13/1/"/>
+    <url>/2021/10/13/1/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Mybatis-pg数据库数组无法映射到实体类"><a href="#Mybatis-pg数据库数组无法映射到实体类" class="headerlink" title="Mybatis pg数据库数组无法映射到实体类"></a>Mybatis pg数据库数组无法映射到实体类</h1><h2 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xquery">java<span class="hljs-built_in">.lang</span>.IllegalArgumentException: Result Maps<span class="hljs-built_in"> collection</span> does<span class="hljs-built_in"> not</span> contain <span class="hljs-keyword">value</span> <span class="hljs-keyword">for</span><br><br><br></code></pre></td></tr></table></figure><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>这里给到的解决方案是设置一个拦截器来处理数据的转换</p><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs scala">public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IntegerArrayTypeHandle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseTypeHandler&lt;Integer</span>[]<span class="hljs-title">&gt;</span> </span>&#123;<br>...<br><span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span>[] getIntegers(<span class="hljs-type">Array</span> array) <span class="hljs-keyword">throws</span> <span class="hljs-type">SQLException</span> &#123;<br>        <span class="hljs-keyword">if</span> (array == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>        <span class="hljs-type">Object</span>[] arr = (<span class="hljs-type">Object</span>[]) array.getArray();<br>        <span class="hljs-keyword">return</span> <span class="hljs-type">Arrays</span>.stream(arr).filter(k-&gt; k!= <span class="hljs-literal">null</span>)<br>        .map(k-&gt;<span class="hljs-type">Integer</span>.valueOf(k.toString()))<br>        .toArray(<span class="hljs-type">Integer</span>[]::<span class="hljs-keyword">new</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs applescript">&lt;resultMap <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;类型的名称&quot;</span> type=<span class="hljs-string">&quot;指定的类&quot;</span>&gt;<br>...<br>    &lt;<span class="hljs-literal">result</span> column=<span class="hljs-string">&quot;数据库中对应的名&quot;</span> <span class="hljs-keyword">property</span>=<span class="hljs-string">&quot;实体类中对应的名&quot;</span> typeHandler=<span class="hljs-string">&quot;拦截器的位置&quot;</span>&gt;&lt;/<span class="hljs-literal">result</span>&gt;<br>&lt;/resultMap&gt;<br></code></pre></td></tr></table></figure><p>这样处理就可以完成数据的转换处理</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mybatis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>DIP依赖倒置</title>
+    <link href="/2021/10/13/DIP%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE/"/>
+    <url>/2021/10/13/DIP%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<h1 id="DIP依赖倒置"><a href="#DIP依赖倒置" class="headerlink" title="DIP依赖倒置"></a>DIP依赖倒置</h1><p>模块之间应该依赖于抽象，而非具体实现</p><p>面向接口编程</p><p>    生产主板的工厂和生产显卡的工程，共同遵循标准接口，来实现</p><p>非依赖于抽象</p><p><img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100758341.png"></p><p>抽象出接口</p><p><img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100758358.png"></p><p>实现接口<br><img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100758617.png"></p><p>依赖于抽象</p><p><img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100759241.png"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>EasyExcel</title>
+    <link href="/2021/10/13/EasyExcel/"/>
+    <url>/2021/10/13/EasyExcel/</url>
+    
+    <content type="html"><![CDATA[<h1 id="EasyExcel"><a href="#EasyExcel" class="headerlink" title="EasyExcel"></a>EasyExcel</h1><p>使用的类图<br><img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100800666.png"><br>流程<br>     EasyExcelFactory工厂创建要使用的类<br>    ExcelWriter 创建ExcelWriter类，write方法中调用ExcelWriter的addContent方法<br>    ExcelWriter addContent方法<br>        1.创建ExcelWriteAddExecutor传入上下文参数并调用add的方法<br>        2.调用addOneRowOfDataToExcel方法，获取上下文中的row和其他信息<br>        3.调用addJavaObjectToExcel方法，将内容写入到Excel文件<br>扩展成多线程写入<br>    要解决的问题<br>        1.从指定行开始写<br>        2.解决head的重复写问题</p><p>​    </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>EasyExcel</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ISP接口隔离</title>
+    <link href="/2021/10/13/ISP%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB/"/>
+    <url>/2021/10/13/ISP%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="ISP接口隔离"><a href="#ISP接口隔离" class="headerlink" title="ISP接口隔离"></a>ISP接口隔离</h1><p>一个接口的职责尽量单一，降低耦合度</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>LSP原则</title>
+    <link href="/2021/10/13/LSP%E5%8E%9F%E5%88%99/"/>
+    <url>/2021/10/13/LSP%E5%8E%9F%E5%88%99/</url>
+    
+    <content type="html"><![CDATA[<h1 id="LSP原则"><a href="#LSP原则" class="headerlink" title="LSP原则"></a>LSP原则</h1><p>父类应该在不改变程序的正确性的前提下被子类替换</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>OCP原则</title>
+    <link href="/2021/10/13/OCP%E5%8E%9F%E5%88%99/"/>
+    <url>/2021/10/13/OCP%E5%8E%9F%E5%88%99/</url>
+    
+    <content type="html"><![CDATA[<h1 id="OCP原则"><a href="#OCP原则" class="headerlink" title="OCP原则"></a>OCP原则</h1><p>对扩展开放，对修改关闭</p><p>通过继承接口的方式来实现</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>SRP原则</title>
+    <link href="/2021/10/13/SRP%E5%8E%9F%E5%88%99/"/>
+    <url>/2021/10/13/SRP%E5%8E%9F%E5%88%99/</url>
+    
+    <content type="html"><![CDATA[<h1 id="SRP原则"><a href="#SRP原则" class="headerlink" title="SRP原则"></a>SRP原则</h1><p>单一职责</p><p>    指责越单一，被修改的可能性越低，内聚性越高</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Tomcat容器</title>
+    <link href="/2021/10/13/Tomcat%E5%AE%B9%E5%99%A8/"/>
+    <url>/2021/10/13/Tomcat%E5%AE%B9%E5%99%A8/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Tomcat容器"><a href="#Tomcat容器" class="headerlink" title="Tomcat容器"></a>Tomcat容器</h1><p>连接器connector</p><p>    1.创建一个服务器套接字，等待传入的HTTP请求</p><p>    2.实现了Runable接口</p><p>        run():</p><p>            1.等待HTTP请求</p><p>            2.创建Processor实例</p><p>            3.调用process方法</p><p>servlet容器</p><p>    四种容器</p><p>        1.Engine 整个Catalina servlet引擎</p><p>        2.Host 包含一个或多个Context容器的虚拟主机</p><p>        3.Context 独立的Web应用，包含多个Wrapper</p><p>        4.Wrapper 一个独立的Servlet</p><p>            负责管理基础servlet的生命周期</p><p>    管道任务</p><p>       <img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100802864.png"></p><p>        管道中可以包含任意的阀</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>tomcat</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>docker</title>
+    <link href="/2021/10/13/docker/"/>
+    <url>/2021/10/13/docker/</url>
+    
+    <content type="html"><![CDATA[<h1 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h1><ol><li>运行容器<ol><li>docker run <ol><li>-t 指定一个终端</li><li>-i 使用输入</li><li>-p 运行映射的端口</li><li>-P 随机映射到主机的端口</li><li>-d 后台运行<ol><li>想要后台运行后进入<ol><li>docker attach</li><li>docker exec<ol><li>docker -it xxx /bin/bash</li></ol></li></ol></li></ol></li><li>—name 容器的名称</li><li>-v 挂在数据卷</li></ol></li></ol></li><li>容器导出<ol><li>docker export<ol><li>docker export xxx &gt;  xx.tar</li></ol></li></ol></li><li>查看容器的状态<ol><li>映射的端口<ol><li>docker port</li></ol></li><li>查看日志<ol><li>docker logs<ol><li>-f 标准输出</li></ol></li></ol></li><li>查看容器信息<ol><li>docker ps</li></ol></li></ol></li><li>镜像操作<ol><li>查看镜像<ol><li>docker images</li></ol></li><li>查找镜像<ol><li>docker search</li></ol></li><li>获取镜像<ol><li>docker pull</li></ol></li><li>删除镜像<ol><li>docker rmi</li></ol></li><li>更新镜像<ol><li>创建容器 run</li><li>apt-get update</li><li>docker commit</li></ol></li><li>构建镜像<ol><li>docker build<ol><li>-t 目标镜像名</li><li>. dockerfile位置</li><li>docker build -t xxx ./</li></ol></li><li>添加标签<ol><li>docker tag</li></ol></li></ol></li><li>推送镜像<ol><li>docker tag xxx</li><li>docker push </li></ol></li></ol></li><li>网络<ol><li>docker network create <ol><li> bridge 隔离各个容器，让每个容器的端口都是隔离的</li><li>overlay 虚拟网络</li></ol></li></ol></li><li>dockerfile<ol><li>from 从xxx地方复制需要的组建</li><li>run 拼接shell命令 docker build的时候执行</li><li>copy 存储位置，目标位置</li><li>add 同copy，会解压</li><li>cmd 在docker run的时候执行</li><li>env 环境变量</li><li>arg 只在build的时候生效</li><li>volume 挂在数据卷</li><li>label 标签</li></ol></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>docker</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>mysql调优</title>
+    <link href="/2021/10/13/mysql%E8%B0%83%E4%BC%98/"/>
+    <url>/2021/10/13/mysql%E8%B0%83%E4%BC%98/</url>
+    
+    <content type="html"><![CDATA[<h1 id="mysql调优"><a href="#mysql调优" class="headerlink" title="mysql调优"></a>mysql调优</h1><p>mysql调优</p><p>    索引的结构</p><p>        1.BREE索引</p><p>        2.HASH索引</p><p>        3.R-TREE索引（空间索引）</p><p>        4.FULL-text索引（全文索引）</p><p>查询频率</p><p>    show global status like  ‘’</p><p>定位低效sql</p><p>    慢查询日志，当sql语句超过某个设定多个时间后保存在日志里</p><p>    show processlist 查看实时的查询</p><p>explain分析指令</p><p>    explain 语句</p><p>    id:查询的顺序</p><p>    select_type:simple简单表，primary主查询，union第二个或后面的查询语句，subquey第一个select</p><p>    possible_keys:可能用到的索引</p><p>    rows:扫描的行数</p><p>最左前缀法则</p><p>    从索引左向右可以递增不能跳跃，跟顺序没有关系</p><p>索引失效情况</p><p>    1.范围查询，后的索引失效</p><p>    2.索引列运算操作，索引失效，例如substring截取字符串</p><p>    3.字符串不加单引号</p><p>    4.or并非全都有索引</p><p>    5.%开头的通配不走索引，除非select的全部都是覆盖索索引的内容</p><p>    6.not int不走索引，in走索引</p><p>索引调优</p><p>    1.尽量使用覆盖索引，避免slect* 使用索引包含的列</p><p>        1.extra显示的含义</p><p>            using index，使用覆盖索引</p><p>            using where, 查找使用索引的情况下，还需要回表查询需要的数据</p><p>            using index condition, 查找使用了索引，但是数据不够回表查询</p><p>            using index</p><p>    2.全表更快，不使用索引</p><p>    3.尽量使用复合索引，少使用单列索引</p><p>        复合索引（a,b,c)</p><p>            索引存在情况</p><p>                a,ab,abc</p><p>        单列索引</p><p>            索引存在情况</p><p>                a,b,c</p><p>大批量数据插入</p><p>    1.按照主键顺序插入</p><p>    2.关闭唯一性校验</p><p>    3.手动提交事务</p><p>oderby优化</p><p>    两种排序，filesort.using index</p><p>    尽量减少额外排序，通过索引覆盖索引，order by顺序和索引顺序一致</p><p>子查询优化</p><p>    尽量减少子查询，使用多表链接代替</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mysql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>单例设计模式</title>
+    <link href="/2021/10/13/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2021/10/13/%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="单例设计模式"><a href="#单例设计模式" class="headerlink" title="单例设计模式"></a>单例设计模式</h1><p>单例设计模式</p><p>    单一的类，负责创建自己的对象，确保只有单个对象被创建，并且提供对外的全局访问点</p><p>    意义：</p><p>        避免类的频繁创建销毁，优化资源共享，减少内存的开销</p><p>    缺点：</p><p>        违背开闭原则，违背单一职责，并发模式公用一个单例</p><p>    懒汉式单例：</p><p>        </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LazySingleton</span> </span>&#123;<br>    <span class="hljs-comment">//volatile保证多线程共享一个实例</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">static</span> LazySingleton INSTANCE;<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">LazySingleton</span><span class="hljs-params">()</span></span>&#123;&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> LazySingleton <span class="hljs-title">getInstance</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">if</span>(INSTANCE==<span class="hljs-keyword">null</span>)&#123;<br>            <span class="hljs-keyword">synchronized</span> (LazySingleton.class)&#123;<br>                <span class="hljs-keyword">if</span>(INSTANCE==<span class="hljs-keyword">null</span>)&#123;<br>                    INSTANCE=<span class="hljs-keyword">new</span> LazySingleton();<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> INSTANCE;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>    饿汉式单例：</p><p>    </p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HungrySingleton</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> HungrySingleton INSTANCE=<span class="hljs-keyword">new</span> HungrySingleton();<br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-title">HungrySingleton</span>(<span class="hljs-params"></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HungrySingleton <span class="hljs-function"><span class="hljs-title">getInstance</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-keyword">return</span> INSTANCE;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>        </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>含两个奇数和N个偶数的数据中寻找两个奇数</title>
+    <link href="/2021/10/13/%E5%90%AB%E6%9C%89%E4%B8%A4%E4%B8%AA%E5%A5%87%E6%95%B0%E5%92%8CN%E4%B8%AA%E5%81%B6%E6%95%B0%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%AD%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E5%A5%87%E6%95%B0/"/>
+    <url>/2021/10/13/%E5%90%AB%E6%9C%89%E4%B8%A4%E4%B8%AA%E5%A5%87%E6%95%B0%E5%92%8CN%E4%B8%AA%E5%81%B6%E6%95%B0%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%AD%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E5%A5%87%E6%95%B0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="含有两个奇数和N个偶数的数组中寻找两个奇数"><a href="#含有两个奇数和N个偶数的数组中寻找两个奇数" class="headerlink" title="含有两个奇数和N个偶数的数组中寻找两个奇数"></a>含有两个奇数和N个偶数的数组中寻找两个奇数</h1><p>含有两个奇数和N个偶数的数组中寻找两个奇数</p><p>找局部最小的数</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数论</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>多线程</title>
+    <link href="/2021/10/13/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <url>/2021/10/13/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    
+    <content type="html"><![CDATA[<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>多线程</p><p>CAS: compare and swap,compare and exchange 比较和交换，没有锁的情况下保持对变量的递增、<img src="image/b75761ef510d99b5abcfca6af5e4668e.png" alt="b75761ef510d99b5abcfca6af5e4668e.png"></p><p>底层cmpxchg在写的时候可能会被修改</p><p>底层使用lock直接加锁，但是是最小的锁保证了原子性</p><p>lock cmpxchg</p><p>普通对象</p><p><img src="image/d544a479f9fe707b20457b00e18e27a6.png" alt="d544a479f9fe707b20457b00e18e27a6.png"></p><p>头内有锁</p><p>指针指向属于那个类</p><p>实力数据成员变量</p><p>对齐如果成员变量不能8整除就补全</p><p>头8字节</p><p>类型指针4个字节</p><p>一共8个字节</p><p><img src="image/427a2adf356ee60ecfa46397250c173d.png" alt="427a2adf356ee60ecfa46397250c173d.png"></p><p>最后补4个字节，被8整除</p><p><img src="image/3e1df0c2403f0e7521c5f41351a7d382.png" alt="3e1df0c2403f0e7521c5f41351a7d382.png"></p><p>数组类型</p><p>synchronized(）加锁</p><p>加锁后在markword里面加锁</p><p>无锁 刚new出对象的时候</p><p>偏向锁</p><p>轻量级锁 自选锁，无锁，自旋锁（cas）</p><p>重量级锁</p><p>加锁有一个升级过程</p><p><img src="image/653743c9f7c5a33daf48c88b84c0fc46.png" alt="653743c9f7c5a33daf48c88b84c0fc46.png"></p><p>31 identityhashcode没有调用的时候</p><p><img src="image/f554ccfdd0a3129884d642c6df98c0cb.png" alt="f554ccfdd0a3129884d642c6df98c0cb.png"></p><p>偏向锁，门上放一个标签，指明是谁的锁，偏向第一个获得到线程</p><p>当发生线程竞争的时候自动升级成重量级锁</p><p>{</p><p>    撤销偏向锁</p><p>    生成LR对象，看谁能先把LR贴到轻量锁（自旋）</p><p>    轻量级锁，自旋锁</p><p>}</p><p>超过10次自旋，或者Adapative self spining升级重量级锁</p><p>向内核申请，排斥量的指针，用户态-&gt;内核态</p><p>锁消除</p><p>锁加粗</p><p>synchonized实现过程</p><p>1.Java代码：synchronized</p><p>    1.monitorenter moniterexit监视进入和退出监视</p><p>    2.自动升级</p><p>    3.lock cmpxchg</p><p>volitile 保证线程的可见性</p><p>     </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>多线程</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>工厂方法模式</title>
+    <link href="/2021/10/13/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2021/10/13/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h1><p>工厂方法模式</p><p>    属于创建型模式</p><p>    提供一个工厂方法，根据参数不同选择不同的子类实现</p><p>    意义：</p><p>        解决接口选择不同实例的问题</p><p>        调用者不用关心具体的实现，只要知道名称即可</p><p>        具有扩展性</p><p>    缺点：</p><p>        增加类型要增加大量的具体实现的方法，和工厂类，增加了系统的依赖</p><p>    </p><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CarFactory</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> Car getCar(<span class="hljs-keyword">String</span> name)&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;宝马&quot;</span>.equals(name))&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-type">BmCar</span>();<br>        &#125;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;特斯拉&quot;</span>.equals(name))&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-type">TslCar</span>();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Car</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">createCar</span><span class="hljs-params">()</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BmCar</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Car</span></span>&#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">createCar</span><span class="hljs-params">()</span> </span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;这里是宝马&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TslCar</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Car</span></span>&#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">createCar</span><span class="hljs-params">()</span> </span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;这里是特斯拉&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> &#123;</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">String</span>[] args)</span></span>&#123;<br>        CarFactory carFactory=<span class="hljs-keyword">new</span> <span class="hljs-built_in">CarFactory</span>();<br>        System.out.<span class="hljs-built_in">println</span>(carFactory.<span class="hljs-built_in">getCar</span>(<span class="hljs-string">&quot;宝马&quot;</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>抽象工厂模式</title>
+    <link href="/2021/10/13/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2021/10/13/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h1><p>抽象工厂模式</p><p>    属于创建型模式</p><p>    通过一个超级工厂创建其他工厂</p><p>    意义：</p><p>        整套产品设计统一工作，集成同一套</p><p>    缺点：</p><p>        难以扩展，需要修改抽象工厂，修改具体实现</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs"><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>设计模式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>数据库</title>
+    <link href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <url>/2021/10/13/%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    
+    <content type="html"><![CDATA[<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><p>数据库</p><p>    mysql里的日志类型：  </p><p>        log的进程，user space-&gt;kernel space，用户的缓存-&gt;系统的缓存-&gt;本地持久化</p><p>        write ahead log 预先日志，当发生一意外情况，可以直接从redo log恢复</p><p>                1.bin log</p><p>                2.undo log 逻辑日志</p><p>                3.redo log  存储日志</p><p>                4.relay log</p><p>                5.error log</p><p>                6.slow log</p><p>            日志归属服务:undo,redo归属与innodb存储引擎，其他归属于server</p><p>       <img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100757625.png"></p><p>       <img src="https://gitee.com/noahBlog/img-bed/raw/master/202111100757671.png"></p><p>            bin和redo,undo产生原因:</p><p>                myisam不支持事务</p><p>            表的存储基于存储引擎，默认innodb</p><p>    ACID</p><p>        原子性: undo log回滚日志，失败的时候执行的语句进行回滚，多版本并发控制MVCC   </p><p>                    undo log: 记录的反向的逻辑，不是存储实际数据，存储在内存钟</p><p>        一致性: </p><p>        隔离性:</p><p>                    读未提交：脏读，不可重复读，幻读</p><p>                    读已提交：不可重复读，幻读               解决了脏读，读到没有commit的数据</p><p>                    可重复读：幻读                                   解决不可重复读，通过undo log实现分布式的读取，可重复读读取事务开启前最新的版本，不可重复度读取事务开启后最新的版本 </p><p>                    串行化：                                             解决了幻读，写数据的时候，一个事务commit insert后，另外一个事务读取不出来insert的数据，导致插入失败（自增id重复），解决方案：mvcc，间隙锁</p><p>                    mvvc提交事务后，等待锁</p><p>        持久性: redo log新数据备份，</p><p>本质实现加锁，版本号，日志，</p><p>锁的类型</p><p>    共享锁（读锁）</p><p>    排它锁（写锁）（独占锁）</p><p>    间隙锁：按照区间间隙来加锁</p><p>    临键锁：行锁+间隙锁</p><p>    自增锁：插入数据失败后，从插入失败的id以后自增</p><p>    库锁</p><p>myisam默认只能锁表</p><p>    共享锁，独占锁</p><p>innodb</p><p>    共享锁，排它锁，间隙锁，临键锁，自增锁</p><p>    </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据库</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>索引</title>
+    <link href="/2021/10/13/%E7%B4%A2%E5%BC%95/"/>
+    <url>/2021/10/13/%E7%B4%A2%E5%BC%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>索引</p><p>    单列索引：以某列作为索引</p><p>    唯一索引：单列索引的增强版，索引值唯一，允许为空</p><p>    复合索引：一个索引中包含多个列</p><p>索引设计原则</p><p>    查询频次较高</p><p>    使用where子句中提取</p><p>    使用唯一索引</p><p>    索引有维护代价</p><p>    使用短索引</p><p>    最左索引，多列中要从最左开始</p><p>存储过程，存储函数</p><p>    存储过程没有返回值</p><p>    存储函数存在返回值</p><p>    预编译提交效率</p><p>    分隔符</p><p>    delimiter $(分隔符已经替换为$)</p><p>    1.创建存储过程</p><p>        ctreate procedure name(参数)</p><p>        begin</p><p>        end;</p><p>    2.调用存储过程</p><p>        call procedure_name()</p><p>    3.查询存储过程</p><p>        select name from mysql.pro where db=’库名’;</p><p>        show procedure status;</p><p>    4.删除存储过程</p><p>        drop procedure 存储过程名;</p><p>    变量</p><p>        定义</p><p>            declare 变量名 type 值 default默认值</p><p>        赋值</p><p>            set 变量=值</p><p>            select count(*) into变量 from</p><p>        传参</p><p>            in输入(默认），out输出，inout输入输出</p><p>                in：</p><p>                    create procedure test(in k int)</p><p>    逻辑</p><p>        判断</p><p>            if xx then </p><p>        case结构</p><p>                case</p><p>                    when (and) then</p><p>                end case</p><p>    循环</p><p>        while满足条件执行</p><p>            while (条件) do</p><p>            end while</p><p>        repeat满足条件推出</p><p>            repeat</p><p>                unteil</p><p>            end repeat</p><p>        loop简单的循环</p><p>            c:loop</p><p>                xxx</p><p>                if (条件) then</p><p>                    leave c;</p><p>            end loop c;</p><p>触发器</p><p>    insert触发器 new表示新的数据</p><p>    update触发器 new新的数据，old旧的数据</p><p>    delete触发器 new新的数据，old旧的数据</p><p>    创建</p><p>        create trigger name</p><p>        brefore/after insert/update/delete</p><p>        on 表名</p><p>        for each row</p><p>        begin</p><p>        end</p><p>    删除</p><p>        drop trigger schema_name(默认但其概念数据库) trigger_name</p><p>    查看触发器</p><p>        show triggers</p><p>        </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据库</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>阻塞与非阻塞</title>
+    <link href="/2021/10/13/%E9%98%BB%E5%A1%9E%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
+    <url>/2021/10/13/%E9%98%BB%E5%A1%9E%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E/</url>
+    
+    <content type="html"><![CDATA[<h1 id="阻塞与非阻塞"><a href="#阻塞与非阻塞" class="headerlink" title="阻塞与非阻塞"></a>阻塞与非阻塞</h1><p>进程访问某个资源的时候，数据的处理方式</p><p>阻塞：资源处理完成后，返回结果</p><p>非阻塞：直接返回结果</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>多线程</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
