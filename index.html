@@ -304,6 +304,62 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/11/12/RocketMQ%E9%98%B2%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E6%9C%BA%E5%88%B6/" target="_self">
+          RocketMQ防消息丢失机制
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/11/12/RocketMQ%E9%98%B2%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E6%9C%BA%E5%88%B6/" target="_self">
+          
+          
+            
+          
+          RocketMQ防消息丢失机制丢失产生的场景
+    1.生产阶段（phase1）
+        Producer发送信息到Broker，添加事务，try-catch拦截异常，做事务回滚
+        
+        但是这里也可能出现新的问题，Producer发送的消息到了Broker,发生了错误，Broker返回错误信息之前，  挂掉了
+        
+        解决方案：使用事
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-12 19:20" pubdate>
+              2021-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/RocketMQ/">RocketMQ</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/11/12/RocketMQ%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/" target="_self">
           RocketMQ顺序问题
         </a>
@@ -658,57 +714,6 @@ lambda应用123451.简单应
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/EasyExcel/">EasyExcel</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/10/13/ISP%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB/" target="_self">
-          ISP接口隔离
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/13/ISP%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB/" target="_self">
-          
-          
-            
-          
-          ISP接口隔离一个接口的职责尽量单一，降低耦合度
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-13 19:20" pubdate>
-              2021-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
             
           </div>
         
