@@ -190,6 +190,179 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/11/12/RocketMQ%E9%98%B2%E6%AD%A2%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D/" target="_self">
+          RocketMQ防止消息重复
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/11/12/RocketMQ%E9%98%B2%E6%AD%A2%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D/" target="_self">
+          
+          
+            
+          
+          RocketMQ防止消息重复重复产生的场景
+
+    1.网络问题，Producer没有收到Broker的响应 phase1，又生产了一个
+    2.网络问题，Brocker没有收到Cusmer的响应 phase2，又分配了一个
+    解决方案:
+        1.幂等，使用version做版本号控制，唯一索引，使用redis校验位唯一性
+    
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-12 19:20" pubdate>
+              2021-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/RocketMQ/">RocketMQ</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/11/12/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" target="_self">
+          建造者模式
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/11/12/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" target="_self">
+          
+          
+            
+          
+          建造者模式建造者模式
+     属于创建型
+     通过组装多个对象生成需要使用的对象
+     意义：肯德基套餐可以有多种组装方式，汉堡+鸡翅，汉堡+鸡块等，这些基础的对 象都是存在的，最终只要组装成的对象不同
+     缺点：需要很多对象
+    
+    
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-12 19:20" pubdate>
+              2021-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/11/12/RocketMQ%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/" target="_self">
+          RocketMQ顺序问题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/11/12/RocketMQ%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/" target="_self">
+          
+          
+            
+          
+          RocketMQ顺序问题顺序产生的场景
+    
+1.每个消费者在Broker中拿到消费信息，但是无法保证Consumer中执行的顺序
+2.单个消费者中多线程执行，没有办法保证顺序
+    总的来说就是多个运行没有办法保证顺序
+解决方案
+    1.每一个消费者对应一个Broker中的队列
+    2.Consumer拿到消息后，先排序再进行操作
+    
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-12 17:20" pubdate>
+              2021-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/RocketMQ/">RocketMQ</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/10/13/Stream/" target="_self">
           Stream
         </a>
@@ -510,161 +683,6 @@ lambda应用123451.简单应
             
           
           ISP接口隔离一个接口的职责尽量单一，降低耦合度
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-13 19:20" pubdate>
-              2021-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/10/13/LSP%E5%8E%9F%E5%88%99/" target="_self">
-          LSP原则
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/13/LSP%E5%8E%9F%E5%88%99/" target="_self">
-          
-          
-            
-          
-          LSP原则父类应该在不改变程序的正确性的前提下被子类替换
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-13 19:20" pubdate>
-              2021-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/10/13/OCP%E5%8E%9F%E5%88%99/" target="_self">
-          OCP原则
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/13/OCP%E5%8E%9F%E5%88%99/" target="_self">
-          
-          
-            
-          
-          OCP原则对扩展开放，对修改关闭
-通过继承接口的方式来实现
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-13 19:20" pubdate>
-              2021-10-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/10/13/SRP%E5%8E%9F%E5%88%99/" target="_self">
-          SRP原则
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/13/SRP%E5%8E%9F%E5%88%99/" target="_self">
-          
-          
-            
-          
-          SRP原则单一职责
-    指责越单一，被修改的可能性越低，内聚性越高
 
         </a>
       </p>
