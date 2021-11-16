@@ -14,20 +14,40 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="description" content="">
-  <meta name="author" content="John Doe">
+  <meta name="author" content="noah">
   <meta name="keywords" content="">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="分类 - 开发">
-<meta property="og:url" content="http://6343326.github.io/categories/%E5%BC%80%E5%8F%91/page/2/index.html">
+  <meta name="description" content="外观模式外观模式     属于结构模式     意义：提供可以需要访问的接口，内部实现对用户透明     缺点：不符合开闭原则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="外观模式">
+<meta property="og:url" content="http://6343326.github.io/2021/11/16/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="NoahのBlog">
+<meta property="og:description" content="外观模式外观模式     属于结构模式     意义：提供可以需要访问的接口，内部实现对用户透明     缺点：不符合开闭原则">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-15T16:02:00.000Z">
+<meta property="article:modified_time" content="2021-11-16T12:52:52.949Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary_large_image">
   
-  <title>分类 - 开发 - NoahのBlog</title>
+  <title>外观模式 - NoahのBlog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -54,7 +74,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -155,9 +175,43 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="分类 - 开发">
+            <span class="h2" id="subtitle" title="外观模式">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-11-16 00:02" pubdate>
+        2021年11月16日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      48 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      1 分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -170,100 +224,98 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 27 篇文章</p>
-  <hr>
-  
-  
-    
       
-      <p class="h5">2021</p>
-    
-    <a href="/2021/11/12/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">建造者模式</span>
-      <time style="float: right;">11-12</time>
-    </a>
-  
-    
-    <a href="/2021/11/12/RocketMQ%E9%98%B2%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E6%9C%BA%E5%88%B6/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">RocketMQ防消息丢失机制</span>
-      <time style="float: right;">11-12</time>
-    </a>
-  
-    
-    <a href="/2021/11/12/RocketMQ%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">RocketMQ顺序问题</span>
-      <time style="float: right;">11-12</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/DIP%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">DIP依赖倒置</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/EasyExcel/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">EasyExcel</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/ISP%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">ISP接口隔离</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/LSP%E5%8E%9F%E5%88%99/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">LSP原则</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/OCP%E5%8E%9F%E5%88%99/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">OCP原则</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/SRP%E5%8E%9F%E5%88%99/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">SRP原则</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-    
-    <a href="/2021/10/13/Tomcat%E5%AE%B9%E5%99%A8/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Tomcat容器</span>
-      <time style="float: right;">10-13</time>
-    </a>
-  
-</div>
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">外观模式</h1>
+            
+            <div class="markdown-body">
+              <h1 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h1><p>外观模式</p>
+<p>    属于结构模式</p>
+<p>    意义：提供可以需要访问的接口，内部实现对用户透明</p>
+<p>    缺点：不符合开闭原则</p>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/categories/%E5%BC%80%E5%8F%91/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/categories/%E5%BC%80%E5%8F%91/">1</a><span class="page-number current">2</span><a class="page-number" href="/categories/%E5%BC%80%E5%8F%91/page/3/#board">3</a><a class="extend next" rel="next" href="/categories/%E5%BC%80%E5%8F%91/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-
-
-
-
-              </div>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/16/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">享元模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/15/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">装饰器模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -346,6 +398,19 @@
   
 
 
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
 
 
 
