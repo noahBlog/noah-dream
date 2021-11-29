@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="noah">
+  <meta name="keywords" content="">
+  <meta name="description" content="IOC控制反转Dependency Inversion Principle，依赖倒置原理 对象之间的依赖通过容器来管理，并由容器完成注入 BeanFactory 12345678910111213141516171819202122232425262728public interface BeanFactory &amp;#123;   Object getBean(String name) throws">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IOC控制反转">
+<meta property="og:url" content="http://6343326.github.io/2021/11/19/IOC%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC/index.html">
+<meta property="og:site_name" content="NoahのBlog">
+<meta property="og:description" content="IOC控制反转Dependency Inversion Principle，依赖倒置原理 对象之间的依赖通过容器来管理，并由容器完成注入 BeanFactory 12345678910111213141516171819202122232425262728public interface BeanFactory &amp;#123;   Object getBean(String name) throws">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-19T09:20:00.000Z">
+<meta property="article:modified_time" content="2021-11-29T09:24:29.791Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>IOC控制反转 - NoahのBlog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"6343326.github.io","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Noah</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="IOC控制反转">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-11-19 17:20" pubdate>
+        2021年11月19日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">IOC控制反转</h1>
+            
+            <div class="markdown-body">
+              <h1 id="IOC控制反转"><a href="#IOC控制反转" class="headerlink" title="IOC控制反转"></a>IOC控制反转</h1><p>Dependency Inversion Principle，依赖倒置原理</p>
+<p>对象之间的依赖通过容器来管理，并由容器完成注入</p>
+<p><strong>BeanFactory</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BeanFactory</span> </span>&#123;<br><br>   <span class="hljs-function">Object <span class="hljs-title">getBean</span><span class="hljs-params">(String name)</span> <span class="hljs-keyword">throws</span> BeansException</span>;<br><br>   &lt;T&gt; <span class="hljs-function">T <span class="hljs-title">getBean</span><span class="hljs-params">(String name, <span class="hljs-meta">@Nullable</span> Class&lt;T&gt; requiredType)</span> <span class="hljs-keyword">throws</span> BeansException</span>;<br><br>   <span class="hljs-function">Object <span class="hljs-title">getBean</span><span class="hljs-params">(String name, Object... args)</span> <span class="hljs-keyword">throws</span> BeansException</span>;<br><br>   &lt;T&gt; <span class="hljs-function">T <span class="hljs-title">getBean</span><span class="hljs-params">(Class&lt;T&gt; requiredType)</span> <span class="hljs-keyword">throws</span> BeansException</span>;<br><br>   &lt;T&gt; <span class="hljs-function">T <span class="hljs-title">getBean</span><span class="hljs-params">(Class&lt;T&gt; requiredType, Object... args)</span> <span class="hljs-keyword">throws</span> BeansException</span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">containsBean</span><span class="hljs-params">(String name)</span></span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isSingleton</span><span class="hljs-params">(String name)</span> <span class="hljs-keyword">throws</span> NoSuchBeanDefinitionException</span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isPrototype</span><span class="hljs-params">(String name)</span> <span class="hljs-keyword">throws</span> NoSuchBeanDefinitionException</span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isTypeMatch</span><span class="hljs-params">(String name, ResolvableType typeToMatch)</span> <span class="hljs-keyword">throws</span> NoSuchBeanDefinitionException</span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isTypeMatch</span><span class="hljs-params">(String name, <span class="hljs-meta">@Nullable</span> Class&lt;?&gt; typeToMatch)</span> <span class="hljs-keyword">throws</span> NoSuchBeanDefinitionException</span>;<br><br>   <span class="hljs-meta">@Nullable</span><br>   Class&lt;?&gt; getType(String name) <span class="hljs-keyword">throws</span> NoSuchBeanDefinitionException;<br><br>   String[] getAliases(String name);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>containsBean方法，判断容器中是否含有指定名称的Bean</p>
+<p>isSingleton方法，判断容器中是否含有指定名称的Singleton类型的Bean</p>
+<p>isPrototype方法，判断容器中是否含有指定名称的Prototype类型的Bean</p>
+<p>isTypeMatch方法，判断容器中是否含有指定名称和类型的Bean</p>
+<p>通过getBean获取容器中的Bean</p>
+<p><strong>XmlBeanFactory</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs scala">public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">XmlBeanFactory</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DefaultListableBeanFactory</span> </span>&#123;<br><br>   <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">XmlBeanDefinitionReader</span> reader = <span class="hljs-keyword">new</span> <span class="hljs-type">XmlBeanDefinitionReader</span>(<span class="hljs-keyword">this</span>);<br><br>   public <span class="hljs-type">XmlBeanFactory</span>(<span class="hljs-type">Resource</span> resource) <span class="hljs-keyword">throws</span> <span class="hljs-type">BeansException</span> &#123;<br>      <span class="hljs-keyword">this</span>(resource, <span class="hljs-literal">null</span>);<br>   &#125;<br><br>   public <span class="hljs-type">XmlBeanFactory</span>(<span class="hljs-type">Resource</span> resource, <span class="hljs-type">BeanFactory</span> parentBeanFactory) <span class="hljs-keyword">throws</span> <span class="hljs-type">BeansException</span> &#123;<br>      <span class="hljs-keyword">super</span>(parentBeanFactory);<br>      <span class="hljs-keyword">this</span>.reader.loadBeanDefinitions(resource);<br>   &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>XmlBeanDefinitionReader提供读取XML的功能，是对DefaultListableBeanFactory的增强</p>
+<p>构造方法中需要传入Resource的类，Resource类是Spring封装IO的类</p>
+<p><strong>Resource</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Resource</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">InputStreamSource</span> </span>&#123;<br><br>   <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">exists</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isReadable</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isOpen</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isFile</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>   &#125;<br><br>   <span class="hljs-function">URL <span class="hljs-title">getURL</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException</span>;<br><br>   <span class="hljs-function">URI <span class="hljs-title">getURI</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException</span>;<br><br>   <span class="hljs-function">File <span class="hljs-title">getFile</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException</span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">default</span> ReadableByteChannel <span class="hljs-title">readableChannel</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;<br>      <span class="hljs-keyword">return</span> Channels.newChannel(getInputStream());<br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">contentLength</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException</span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">lastModified</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException</span>;<br><br>   <span class="hljs-function">Resource <span class="hljs-title">createRelative</span><span class="hljs-params">(String relativePath)</span> <span class="hljs-keyword">throws</span> IOException</span>;<br><br>   <span class="hljs-meta">@Nullable</span><br>   <span class="hljs-function">String <span class="hljs-title">getFilename</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-function">String <span class="hljs-title">getDescription</span><span class="hljs-params">()</span></span>;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>ClassPathResource是AbstractResource的子类，AbstractResource实现了Resource接口</p>
+<p><strong>从XML创建Bean</strong></p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-comment">//从XML读取Bean并创建</span><br>ClassPathResource res = new ClassPathResource (<span class="hljs-string">&quot;beans.xml”);</span><br>DefaultListableBeanFactory factory=new DefaultListableBeanFactory();<br>XmlBeanDefinitionReader reader=new XmlBeanDefinitionReader(factory);<br>reader.loadBeanDefinitions(res); <br></code></pre></td></tr></table></figure>
+
+<p><strong>ApplicationContext</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ApplicationContext</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">EnvironmentCapable</span>, <span class="hljs-title">ListableBeanFactory</span>, <span class="hljs-title">HierarchicalBeanFactory</span>,</span><br><span class="hljs-class">      <span class="hljs-title">MessageSource</span>, <span class="hljs-title">ApplicationEventPublisher</span>, <span class="hljs-title">ResourcePatternResolver</span> </span>&#123;<br><br>   <span class="hljs-meta">@Nullable</span><br>   <span class="hljs-function">String <span class="hljs-title">getId</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-function">String <span class="hljs-title">getApplicationName</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-function">String <span class="hljs-title">getDisplayName</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">getStartupDate</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-meta">@Nullable</span><br>   <span class="hljs-function">ApplicationContext <span class="hljs-title">getParent</span><span class="hljs-params">()</span></span>;<br><br>   <span class="hljs-function">AutowireCapableBeanFactory <span class="hljs-title">getAutowireCapableBeanFactory</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IllegalStateException</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>MessageSource 处理消息</strong></p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">interface</span> <span class="hljs-selector-tag">MessageSource</span> &#123;<br><br>   <span class="hljs-variable">@Nullable</span><br>   String getMessage(String code, <span class="hljs-variable">@Nullable</span> Object[] args, <span class="hljs-variable">@Nullable</span> String defaultMessage, Locale locale);<br><br>   <span class="hljs-selector-tag">String</span> <span class="hljs-selector-tag">getMessage</span>(String code, <span class="hljs-variable">@Nullable</span> Object[] args, Locale locale) <span class="hljs-selector-tag">throws</span> <span class="hljs-selector-tag">NoSuchMessageException</span>;<br><br>   <span class="hljs-selector-tag">String</span> <span class="hljs-selector-tag">getMessage</span>(MessageSourceResolvable resolvable, Locale locale) <span class="hljs-selector-tag">throws</span> <span class="hljs-selector-tag">NoSuchMessageException</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>ResourcePatternResolver 提供资源访问服务</strong></p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ResourcePatternResolver</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span> <span class="hljs-type">ResourceLoader</span></span> </span>&#123;<br>   <span class="hljs-keyword">String</span> CLASSPATH_ALL_URL_PREFIX = <span class="hljs-string">&quot;classpath*:&quot;</span>;<br><br>   Resource[] getResources(<span class="hljs-keyword">String</span> locationPattern) throws IOException;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>ApplicationEventPublisher 提供事件服务</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">ApplicationEventPublisher</span> &#123;<br><br>   <span class="hljs-function"><span class="hljs-literal">default</span> <span class="hljs-keyword">void</span> <span class="hljs-title">publishEvent</span>(<span class="hljs-params">ApplicationEvent <span class="hljs-keyword">event</span></span>)</span> &#123;<br>      publishEvent((Object) <span class="hljs-keyword">event</span>);<br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">publishEvent</span>(<span class="hljs-params">Object <span class="hljs-keyword">event</span></span>)</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>BeanDefinition加载Bean到容器</strong></p>
+<p>通过在容器内部维护一个HashMap</p>
+<p><strong>DefaultListableBeanFactory</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs scala">public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultListableBeanFactory</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractAutowireCapableBeanFactory</span></span><br>      implements <span class="hljs-type">ConfigurableListableBeanFactory</span>, <span class="hljs-type">BeanDefinitionRegistry</span>, <span class="hljs-type">Serializable</span> &#123;<br><span class="hljs-comment">//省略其他方法</span><br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>FileSystemXmlApplicationContext 载入入口refresh</strong></p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">FileSystemXmlApplicationContext</span> <span class="hljs-selector-tag">extends</span> <span class="hljs-selector-tag">AbstractXmlApplicationContext</span> &#123;<br>    <span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">FileSystemXmlApplicationContext</span>(<br>          String[] configLocations, boolean refresh, <span class="hljs-variable">@Nullable</span>     ApplicationContext parent)<br>          <span class="hljs-selector-tag">throws</span> <span class="hljs-selector-tag">BeansException</span> &#123;<br><br>       <span class="hljs-selector-tag">super</span>(parent);<br>       <span class="hljs-selector-tag">setConfigLocations</span>(configLocations);<br>       <span class="hljs-selector-tag">if</span> (refresh) &#123;<br>          <span class="hljs-selector-tag">refresh</span>();<br>       &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>AbstractApplicationContext 实现refresh方法，使用了同步锁</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">public abstract <span class="hljs-keyword">class</span> AbstractApplicationContext extends DefaultResourceLoader<br>      implements ConfigurableApplicationContext &#123;<br>   @Override<br>   public void refresh<span class="hljs-literal">()</span> throws BeansException, IllegalStateException &#123;<br>      synchronized (this.startupShutdownMonitor) &#123;<br>         <span class="hljs-comment">// Prepare this context for refreshing.</span><br>         prepare<span class="hljs-constructor">Refresh()</span>;<br>         ConfigurableListableBeanFactory beanFactory = obtain<span class="hljs-constructor">FreshBeanFactory()</span>;<br>         prepare<span class="hljs-constructor">BeanFactory(<span class="hljs-params">beanFactory</span>)</span>;<br>         <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// Allows post-processing of the bean factory in context subclasses.</span><br>            post<span class="hljs-constructor">ProcessBeanFactory(<span class="hljs-params">beanFactory</span>)</span>;<br>            invoke<span class="hljs-constructor">BeanFactoryPostProcessors(<span class="hljs-params">beanFactory</span>)</span>;<br>            register<span class="hljs-constructor">BeanPostProcessors(<span class="hljs-params">beanFactory</span>)</span>;<br>            init<span class="hljs-constructor">MessageSource()</span>;<br><br>            init<span class="hljs-constructor">ApplicationEventMulticaster()</span>;<br>            on<span class="hljs-constructor">Refresh()</span>;<br>            register<span class="hljs-constructor">Listeners()</span>;<br>            finish<span class="hljs-constructor">BeanFactoryInitialization(<span class="hljs-params">beanFactory</span>)</span>;<br>            finish<span class="hljs-constructor">Refresh()</span>;<br>         &#125; catch (BeansException ex) &#123;<br>            <span class="hljs-keyword">if</span> (logger.is<span class="hljs-constructor">WarnEnabled()</span>) &#123;<br>               logger.warn(<span class="hljs-string">&quot;Exception encountered during context initialization - &quot;</span> +<br>                     <span class="hljs-string">&quot;cancelling refresh attempt: &quot;</span> + ex);<br>            &#125;<br><br>            destroy<span class="hljs-constructor">Beans()</span>;<br>            cancel<span class="hljs-constructor">Refresh(<span class="hljs-params">ex</span>)</span>;<br>            throw ex;<br>         &#125;finally &#123;<br>            reset<span class="hljs-constructor">CommonCaches()</span>;<br>         &#125;<br>      &#125;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>AbstractRefreshableApplicationContext</strong></p>
+<p>如果容器启动还有容器就干掉</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs scala">public <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbstractRefreshableApplicationContext</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractApplicationContext</span> </span>&#123;<br>   <span class="hljs-meta">@Override</span><br>   <span class="hljs-keyword">protected</span> <span class="hljs-keyword">final</span> void refreshBeanFactory() <span class="hljs-keyword">throws</span> <span class="hljs-type">BeansException</span> &#123;<br>      <span class="hljs-keyword">if</span> (hasBeanFactory()) &#123;<br>         destroyBeans();<br>         closeBeanFactory();<br>      &#125;<br>      <span class="hljs-keyword">try</span> &#123;<br>         <span class="hljs-type">DefaultListableBeanFactory</span> beanFactory = createBeanFactory();<br>         beanFactory.setSerializationId(getId());<br>         customizeBeanFactory(beanFactory);<br>         loadBeanDefinitions(beanFactory);<br>         synchronized (<span class="hljs-keyword">this</span>.beanFactoryMonitor) &#123;<br>            <span class="hljs-keyword">this</span>.beanFactory = beanFactory;<br>         &#125;<br>      &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-type">IOException</span> ex) &#123;<br>         <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-type">ApplicationContextException</span>(<span class="hljs-string">&quot;I/O error parsing bean definition source for &quot;</span> + getDisplayName(), ex);<br>      &#125;<br>   &#125;<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/java/">java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Spring/">Spring</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/19/AOP/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AOP</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/19/Intger%E5%92%8Cint%E6%AF%94%E8%BE%83%E7%9A%84%E5%9D%91/">
+                        <span class="hidden-mobile">Integer与int比较的坑</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
