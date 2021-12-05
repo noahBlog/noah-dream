@@ -1,521 +1,193 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" href="/img/favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="noah">
-  <meta name="keywords" content="">
-  <meta name="description" content="索引索引     单列索引：以某列作为索引     唯一索引：单列索引的增强版，索引值唯一，允许为空     复合索引：一个索引中包含多个列 索引设计原则     查询频次较高     使用where子句中提取     使用唯一索引     索引有维护代价     使用短索引     最左索引，多列中要从最左开始 存储过程，存储函数     存储过程没有返回值     存储函数存在返回值">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>索引 | NoahのBlog</title><meta name="keywords" content="数据库"><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="索引 单列索引：以某列作为索引 唯一索引：单列索引的增强版，索引值唯一，允许为空 复合索引：一个索引中包含多个列  索引设计原则 查询频次较高 使用where子句中提取 使用唯一索引 索引有维护代价 使用短索引 最左索引，多列中要从最左开始  存储过程，存储函数 存储过程没有返回值 存储函数存在返回值 预编译提交效率  分隔符delimiter $(分隔符已经替换为$) 存储过程 创建存储过程12">
 <meta property="og:type" content="article">
 <meta property="og:title" content="索引">
 <meta property="og:url" content="http://6343326.github.io/2021/10/13/%E7%B4%A2%E5%BC%95/index.html">
 <meta property="og:site_name" content="NoahのBlog">
-<meta property="og:description" content="索引索引     单列索引：以某列作为索引     唯一索引：单列索引的增强版，索引值唯一，允许为空     复合索引：一个索引中包含多个列 索引设计原则     查询频次较高     使用where子句中提取     使用唯一索引     索引有维护代价     使用短索引     最左索引，多列中要从最左开始 存储过程，存储函数     存储过程没有返回值     存储函数存在返回值">
+<meta property="og:description" content="索引 单列索引：以某列作为索引 唯一索引：单列索引的增强版，索引值唯一，允许为空 复合索引：一个索引中包含多个列  索引设计原则 查询频次较高 使用where子句中提取 使用唯一索引 索引有维护代价 使用短索引 最左索引，多列中要从最左开始  存储过程，存储函数 存储过程没有返回值 存储函数存在返回值 预编译提交效率  分隔符delimiter $(分隔符已经替换为$) 存储过程 创建存储过程12">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
 <meta property="article:published_time" content="2021-10-13T11:20:00.000Z">
-<meta property="article:modified_time" content="2021-11-10T00:08:21.259Z">
+<meta property="article:modified_time" content="2021-12-05T03:59:01.752Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据库">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://6343326.github.io/2021/10/13/%E7%B4%A2%E5%BC%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '索引',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-05 11:59:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
-  <title>索引 - NoahのBlog</title>
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
-
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
   
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
-    
-  
-
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
-  
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"6343326.github.io","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Noah</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="索引">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-10-13 19:20" pubdate>
-        2021年10月13日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      805 字
-    </span>
-  
-
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      3 分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">索引</h1>
-            
-            <div class="markdown-body">
-              <h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>索引</p>
-<p>    单列索引：以某列作为索引</p>
-<p>    唯一索引：单列索引的增强版，索引值唯一，允许为空</p>
-<p>    复合索引：一个索引中包含多个列</p>
-<p>索引设计原则</p>
-<p>    查询频次较高</p>
-<p>    使用where子句中提取</p>
-<p>    使用唯一索引</p>
-<p>    索引有维护代价</p>
-<p>    使用短索引</p>
-<p>    最左索引，多列中要从最左开始</p>
-<p>存储过程，存储函数</p>
-<p>    存储过程没有返回值</p>
-<p>    存储函数存在返回值</p>
-<p>    预编译提交效率</p>
-<p>    分隔符</p>
-<p>    delimiter $(分隔符已经替换为$)</p>
-<p>    1.创建存储过程</p>
-<p>        ctreate procedure name(参数)</p>
-<p>        begin</p>
-<p>        end;</p>
-<p>    2.调用存储过程</p>
-<p>        call procedure_name()</p>
-<p>    3.查询存储过程</p>
-<p>        select name from mysql.pro where db=’库名’;</p>
-<p>        show procedure status;</p>
-<p>    4.删除存储过程</p>
-<p>        drop procedure 存储过程名;</p>
-<p>    变量</p>
-<p>        定义</p>
-<p>            declare 变量名 type 值 default默认值</p>
-<p>        赋值</p>
-<p>            set 变量=值</p>
-<p>            select count(*) into变量 from</p>
-<p>        传参</p>
-<p>            in输入(默认），out输出，inout输入输出</p>
-<p>                in：</p>
-<p>                    create procedure test(in k int)</p>
-<p>    逻辑</p>
-<p>        判断</p>
-<p>            if xx then </p>
-<p>        case结构</p>
-<p>                case</p>
-<p>                    when (and) then</p>
-<p>                end case</p>
-<p>    循环</p>
-<p>        while满足条件执行</p>
-<p>            while (条件) do</p>
-<p>            end while</p>
-<p>        repeat满足条件推出</p>
-<p>            repeat</p>
-<p>                unteil</p>
-<p>            end repeat</p>
-<p>        loop简单的循环</p>
-<p>            c:loop</p>
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">44</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">NoahのBlog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">索引</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-13T11:20:00.000Z" title="发表于 2021-10-13 19:20:00">2021-10-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-05T03:59:01.752Z" title="更新于 2021-12-05 11:59:01">2021-12-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91/">开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="索引"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><ol>
+<li>单列索引：以某列作为索引</li>
+<li>唯一索引：单列索引的增强版，索引值唯一，允许为空</li>
+<li>复合索引：一个索引中包含多个列</li>
+</ol>
+<h1 id="索引设计原则"><a href="#索引设计原则" class="headerlink" title="索引设计原则"></a>索引设计原则</h1><ol>
+<li>查询频次较高</li>
+<li>使用where子句中提取</li>
+<li>使用唯一索引</li>
+<li>索引有维护代价</li>
+<li>使用短索引</li>
+<li>最左索引，多列中要从最左开始</li>
+</ol>
+<h1 id="存储过程，存储函数"><a href="#存储过程，存储函数" class="headerlink" title="存储过程，存储函数"></a>存储过程，存储函数</h1><ol>
+<li>存储过程没有返回值</li>
+<li>存储函数存在返回值</li>
+<li>预编译提交效率</li>
+</ol>
+<h2 id="分隔符"><a href="#分隔符" class="headerlink" title="分隔符"></a>分隔符</h2><p>delimiter $(分隔符已经替换为$)</p>
+<h1 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h1><ol>
+<li>创建存储过程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        ctreate procedure name\(参数\)</span><br><span class="line">        begin</span><br><span class="line">        end;</span><br></pre></td></tr></table></figure></li>
+<li>调用存储过程<br>call procedure_name()</li>
+<li>查询存储过程<br>select name from mysql.pro where db=’库名’;<br>show procedure status;</li>
+<li>删除存储过程<br>drop procedure 存储过程名;<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2>declare 变量名 type 值 default默认值<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2>set 变量=值<br>select count(*) into变量 from<h3 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h3>in输入(默认），out输出，inout输入输出<br>in：<br> create procedure test(in k int)</li>
+</ol>
+<h1 id="逻辑"><a href="#逻辑" class="headerlink" title="逻辑"></a>逻辑</h1><h2 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h2><p>if xx then </p>
+<h2 id="case结构"><a href="#case结构" class="headerlink" title="case结构"></a>case结构</h2><p>case<br>when (and) then<br>end case</p>
+<h1 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h1><h2 id="while满足条件执行"><a href="#while满足条件执行" class="headerlink" title="while满足条件执行"></a>while满足条件执行</h2><p>            while (条件) do<br>            end while</p>
+<h2 id="repeat满足条件推出"><a href="#repeat满足条件推出" class="headerlink" title="repeat满足条件推出"></a>repeat满足条件推出</h2><p>            repeat<br>                unteil<br>            end repeat</p>
+<h2 id="loop简单的循环"><a href="#loop简单的循环" class="headerlink" title="loop简单的循环"></a>loop简单的循环</h2><p>            c:loop</p>
 <p>                xxx</p>
 <p>                if (条件) then</p>
 <p>                    leave c;</p>
 <p>            end loop c;</p>
-<p>触发器</p>
-<p>    insert触发器 new表示新的数据</p>
-<p>    update触发器 new新的数据，old旧的数据</p>
-<p>    delete触发器 new新的数据，old旧的数据</p>
-<p>    创建</p>
-<p>        create trigger name</p>
+<h1 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h1><h2 id="insert触发器-new表示新的数据"><a href="#insert触发器-new表示新的数据" class="headerlink" title="insert触发器 new表示新的数据"></a>insert触发器 new表示新的数据</h2><h2 id="update触发器-new新的数据，old旧的数据"><a href="#update触发器-new新的数据，old旧的数据" class="headerlink" title="update触发器 new新的数据，old旧的数据"></a>update触发器 new新的数据，old旧的数据</h2><h2 id="delete触发器-new新的数据，old旧的数据"><a href="#delete触发器-new新的数据，old旧的数据" class="headerlink" title="delete触发器 new新的数据，old旧的数据"></a>delete触发器 new新的数据，old旧的数据</h2><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>        create trigger name</p>
 <p>        brefore/after insert/update/delete</p>
 <p>        on 表名</p>
 <p>        for each row</p>
 <p>        begin</p>
 <p>        end</p>
-<p>    删除</p>
-<p>        drop trigger schema_name(默认但其概念数据库) trigger_name</p>
-<p>    查看触发器</p>
-<p>        show triggers</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>        drop trigger schema_name(默认但其概念数据库) trigger_name</p>
+<h2 id="查看触发器"><a href="#查看触发器" class="headerlink" title="查看触发器"></a>查看触发器</h2><p>        show triggers</p>
 <p>        </p>
-
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
-              
-              
-                <div class="post-prevnext">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%BA%93/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据库</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2021/10/13/%E9%98%BB%E5%A1%9E%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E/">
-                        <span class="hidden-mobile">阻塞与非阻塞</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-    
-
-    
-  </main>
-
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-  </div>
-  
-
-  
-
-  
-</footer>
-
-
-  <!-- SCRIPTS -->
-  
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-<!-- Plugins -->
-
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-  
-
-
-
-  
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-      typing(title)
-      
-    })(window, document);
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script>
-
-
-</body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://6343326.github.io/2021/10/13/%E7%B4%A2%E5%BC%95/">http://6343326.github.io/2021/10/13/%E7%B4%A2%E5%BC%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://6343326.github.io" target="_blank">NoahのBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/13/%E6%95%B0%E6%8D%AE%E5%BA%93/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据库</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/13/%E9%98%BB%E5%A1%9E%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">阻塞与非阻塞</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">44</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-number">1.</span> <span class="toc-text">索引</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-number">2.</span> <span class="toc-text">索引设计原则</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%EF%BC%8C%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">存储过程，存储函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%9A%94%E7%AC%A6"><span class="toc-number">3.1.</span> <span class="toc-text">分隔符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">存储过程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-number">5.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">5.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC"><span class="toc-number">5.2.</span> <span class="toc-text">赋值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E5%8F%82"><span class="toc-number">5.2.1.</span> <span class="toc-text">传参</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%BB%E8%BE%91"><span class="toc-number">6.</span> <span class="toc-text">逻辑</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A4%E6%96%AD"><span class="toc-number">6.1.</span> <span class="toc-text">判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case%E7%BB%93%E6%9E%84"><span class="toc-number">6.2.</span> <span class="toc-text">case结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-number">7.</span> <span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#while%E6%BB%A1%E8%B6%B3%E6%9D%A1%E4%BB%B6%E6%89%A7%E8%A1%8C"><span class="toc-number">7.1.</span> <span class="toc-text">while满足条件执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#repeat%E6%BB%A1%E8%B6%B3%E6%9D%A1%E4%BB%B6%E6%8E%A8%E5%87%BA"><span class="toc-number">7.2.</span> <span class="toc-text">repeat满足条件推出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#loop%E7%AE%80%E5%8D%95%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">7.3.</span> <span class="toc-text">loop简单的循环</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">8.</span> <span class="toc-text">触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#insert%E8%A7%A6%E5%8F%91%E5%99%A8-new%E8%A1%A8%E7%A4%BA%E6%96%B0%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">8.1.</span> <span class="toc-text">insert触发器 new表示新的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#update%E8%A7%A6%E5%8F%91%E5%99%A8-new%E6%96%B0%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8Cold%E6%97%A7%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">8.2.</span> <span class="toc-text">update触发器 new新的数据，old旧的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#delete%E8%A7%A6%E5%8F%91%E5%99%A8-new%E6%96%B0%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8Cold%E6%97%A7%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">8.3.</span> <span class="toc-text">delete触发器 new新的数据，old旧的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA"><span class="toc-number">8.4.</span> <span class="toc-text">创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">8.5.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">8.6.</span> <span class="toc-text">查看触发器</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/19/AOP/" title="AOP">AOP</a><time datetime="2021-11-19T09:20:00.000Z" title="发表于 2021-11-19 17:20:00">2021-11-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/19/IOC%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC/" title="IOC控制反转">IOC控制反转</a><time datetime="2021-11-19T09:20:00.000Z" title="发表于 2021-11-19 17:20:00">2021-11-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/19/Intger%E5%92%8Cint%E6%AF%94%E8%BE%83%E7%9A%84%E5%9D%91/" title="Integer与int比较的坑">Integer与int比较的坑</a><time datetime="2021-11-19T09:20:00.000Z" title="发表于 2021-11-19 17:20:00">2021-11-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/19/IO%E6%A8%A1%E5%9E%8B/" title="IO模型">IO模型</a><time datetime="2021-11-19T09:20:00.000Z" title="发表于 2021-11-19 17:20:00">2021-11-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/19/Spring_Bean/" title="Spring Bean">Spring Bean</a><time datetime="2021-11-19T09:20:00.000Z" title="发表于 2021-11-19 17:20:00">2021-11-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
